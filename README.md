@@ -1,2 +1,6 @@
-# fasthttpchain
-Handler chaining for fast http
+# FastHttpChain
+FastHttp Request Handler chaining
+
+## Why 
+
+Because `FastHttp`
