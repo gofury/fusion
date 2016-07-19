@@ -12,7 +12,7 @@ However, having `RequestHandlers` improves speed significantly wth zero `mallocs
 
 ## Usage
 
-To ensure immutability, you can only create a `RequestHandlerChain` via constructor 
+To ensure immutability, you can either initialise a `RequestHandlerChain` via directly: 
 
     chain := RequestHandlerChain{Middleware1, Middleware2, Middleware3}
 
