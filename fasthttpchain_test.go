@@ -6,7 +6,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func TestNew(t *testing.T) {
+func TestInit(t *testing.T) {
 	// given
 	handlers := []fasthttp.RequestHandler{
 		func(ctx *fasthttp.RequestCtx) {},
