@@ -2,24 +2,22 @@ package fasthttpchain
 
 import (
 	"github.com/valyala/fasthttp"
-	//"github.com/buaazp/fasthttprouter"
 )
 
 type RequestHandlerChain struct {
-	requests []fasthttp.RequestHandler
+	handlers []fasthttp.RequestHandler
 }
 
-func (chain *RequestHandlerChain) HandlerChain(ctx *fasthttp.RequestCtx) {
-	for i := range chain.requests {
-		chain.requests[i](ctx)
+func New(hs ...fasthttp.RequestHandler) RequestHandlerChain {
+	handlers := make([]fasthttp.RequestHandler, 0, len(hs))
+	return RequestHandlerChain{append(handlers, hs...)}
+}
+
+func (chain *RequestHandlerChain) Handler(ctx *fasthttp.RequestCtx) {
+	for i := range chain.handlers {
+		chain.handlers[i](ctx)
 	}
 }
-
-//func (chain *FastHttpChain) ChainRouter(ctx *fasthttp.RequestCtx, params *fasthttprouter.Params) {
-//	for i := range chain.requests {
-//		chain.requests[i](ctx, params)
-//	}
-//}
 
 type FastHttpChainBuilder struct {
 	chain RequestHandlerChain
@@ -29,8 +27,8 @@ func Builder() *FastHttpChainBuilder {
 	return &FastHttpChainBuilder{RequestHandlerChain{}}
 }
 
-func (builder *FastHttpChainBuilder) Append(handlers... fasthttp.RequestHandler) *FastHttpChainBuilder {
-	builder.chain.requests = append(builder.chain.requests, handlers...)
+func (builder *FastHttpChainBuilder) Append(hs... fasthttp.RequestHandler) *FastHttpChainBuilder {
+	builder.chain.handlers = append(builder.chain.handlers, hs...)
 	return builder
 }
 

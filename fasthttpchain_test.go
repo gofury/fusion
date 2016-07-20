@@ -18,7 +18,15 @@ func TestInit(t *testing.T) {
 	chain := RequestHandlerChain{handlers}
 
 	// then
-	assert.Equal(t, len(chain.requests), 3, "should have 2 request handlers")
+	assert.Equal(t, len(chain.handlers), 3, "should have 2 request handlers")
+}
+
+func TestNew(t *testing.T) {
+	// when
+	chain := New(func(ctx *fasthttp.RequestCtx) {}, func(ctx *fasthttp.RequestCtx) {}, func(ctx *fasthttp.RequestCtx) {})
+
+	// then
+	assert.Equal(t, len(chain.handlers), 3, "should have 2 request handlers")
 }
 
 func TestBuilder(t *testing.T) {
@@ -31,7 +39,7 @@ func TestBuilder(t *testing.T) {
 		Build()
 
 	// then
-	assert.Equal(t, len(chain.requests), 3, "should have 3 request handlers")
+	assert.Equal(t, len(chain.handlers), 3, "should have 3 request handlers")
 }
 
 func TestHandlersRunInOrder(t *testing.T) {
@@ -51,7 +59,7 @@ func TestHandlersRunInOrder(t *testing.T) {
 	ctx := fasthttp.RequestCtx{}
 
 	// when
-	chain.HandlerChain(&ctx)
+	chain.Handler(&ctx)
 
 	// then
 	assert.Equal(t, ctx.UserValue("params"), "123")
