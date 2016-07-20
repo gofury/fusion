@@ -1,5 +1,6 @@
 # FastHttpChain
 FastHttp `RequestHandler` based Middleware chaining
+
 [![Build Status](https://snap-ci.com/gofury/fasthttpchain/branch/master/build_image)](https://snap-ci.com/gofury/fasthttpchain/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/gofury/fasthttpchain/badge.svg?branch=master)](https://coveralls.io/github/gofury/fasthttpchain?branch=master)
 
@@ -30,11 +31,10 @@ or using a `Builder()`
     
 Once you have `RequestHandlerChain`, you can pass in the `Handler` function to your `fasthttp` server. which 
 
-- implements `RequestHandler` 
-- calls all handlers in the chain according to the order they are added.
-
     fasthttp.ListenAndServe("localhost:8080", chain.Handler)
     
+The `Handler` function implements `RequestHandler` interface and will calls all handlers in the chain according to 
+the order they are added.
 
 [requestHandler]:   https://godoc.org/github.com/valyala/fasthttp#RequestHandler 
 [performance]:      https://github.com/valyala/fasthttp#switching-from-nethttp-to-fasthttp
