@@ -8,9 +8,9 @@ type RequestHandlerChain struct {
 	handlers []fasthttp.RequestHandler
 }
 
-func New(hs ...fasthttp.RequestHandler) RequestHandlerChain {
+func New(hs ...fasthttp.RequestHandler) *RequestHandlerChain {
 	handlers := make([]fasthttp.RequestHandler, 0, len(hs))
-	return RequestHandlerChain{append(handlers, hs...)}
+	return &RequestHandlerChain{append(handlers, hs...)}
 }
 
 func (chain *RequestHandlerChain) Handler(ctx *fasthttp.RequestCtx) {
