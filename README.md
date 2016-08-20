@@ -2,6 +2,7 @@
 FastHttp `RequestHandler` based Middleware chaining
 
 [![Build Status](https://snap-ci.com/gofury/fasthttpchain/branch/master/build_image)](https://snap-ci.com/gofury/fasthttpchain/branch/master)
+[![Code Climate](https://codeclimate.com/github/gofury/fasthttpchain/badges/gpa.svg)](https://codeclimate.com/github/gofury/fasthttpchain)
 [![Coverage Status](https://coveralls.io/repos/github/gofury/fasthttpchain/badge.svg?branch=master)](https://coveralls.io/github/gofury/fasthttpchain?branch=master)
 
 [GoDoc][godoc]
