@@ -4,6 +4,8 @@ FastHttp `RequestHandler` based Middleware chaining
 [![Build Status](https://snap-ci.com/gofury/fasthttpchain/branch/master/build_image)](https://snap-ci.com/gofury/fasthttpchain/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/gofury/fasthttpchain/badge.svg?branch=master)](https://coveralls.io/github/gofury/fasthttpchain?branch=master)
 
+[GoDoc][godoc]
+
 ## Why
 Chaining middleware calls allows you to turn:
 
@@ -40,3 +42,4 @@ the order they are added.
 [performance]:      https://github.com/valyala/fasthttp#switching-from-nethttp-to-fasthttp
 [alice]:            https://github.com/justinas/alice/
 [negroni]:          https://github.com/urfave/negroni
+[godoc]:			https://godoc.org/github.com/gofury/fasthttpchain
