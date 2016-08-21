@@ -14,8 +14,10 @@ func New(hs ...fasthttp.RequestHandler) *RequestHandlerChain {
 }
 
 func (chain *RequestHandlerChain) Handler(ctx *fasthttp.RequestCtx) {
-	for i := range chain.handlers {
-		chain.handlers[i](ctx)
+	for _, h := range chain.handlers {
+		if (ctx.Response.StatusCode() < 400) {
+			h(ctx)
+		}
 	}
 }
 

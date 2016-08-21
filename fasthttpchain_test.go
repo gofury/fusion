@@ -45,22 +45,37 @@ func TestBuilder(t *testing.T) {
 func TestHandlersRunInOrder(t *testing.T) {
 	// given
 	handlers := []fasthttp.RequestHandler{
-		func(ctx *fasthttp.RequestCtx) {
-			ctx.SetUserValue("params", "1")
-		},
-		func(ctx *fasthttp.RequestCtx) {
-			ctx.SetUserValue("params", ctx.UserValue("params").(string) + "2")
-		},
-		func(ctx *fasthttp.RequestCtx) {
-			ctx.SetUserValue("params", ctx.UserValue("params").(string) + "3")
-		},
+		func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", "1")},
+		func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", ctx.UserValue("params").(string) + "2")},
+		func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", ctx.UserValue("params").(string) + "3")},
 	}
 	chain := RequestHandlerChain{handlers}
-	ctx := fasthttp.RequestCtx{}
+	ctx := &fasthttp.RequestCtx{}
 
 	// when
-	chain.Handler(&ctx)
+	chain.Handler(ctx)
 
 	// then
 	assert.Equal(t, ctx.UserValue("params"), "123")
+}
+
+func TestStopOnResponseStatus(t *testing.T) {
+	// given
+	handlers := []fasthttp.RequestHandler{
+		func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", "1")},
+		func(ctx *fasthttp.RequestCtx) {
+			ctx.SetUserValue("params", ctx.UserValue("params").(string) + "2")
+			ctx.SetStatusCode(fasthttp.StatusBadRequest)
+		},
+		func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", ctx.UserValue("params").(string) + "3")},
+	}
+	chain := RequestHandlerChain{handlers}
+	ctx := &fasthttp.RequestCtx{}
+
+	// when
+	chain.Handler(ctx)
+
+	// then
+	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
+	assert.Equal(t, "12", ctx.UserValue("params"))
 }
