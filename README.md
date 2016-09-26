@@ -9,7 +9,7 @@ Middleware chaining for [valyala/fasthttp][fasthttp]. Works for both:
  1. Traditional `Middlewares`: `func Middleware(h RequestHandler) RequestHandler`
  2. Pure [`RequestHandler`][requestHandler]: `func Handler(ctx *RequestCtx)`
 
-This library is very much inspired by 
+This library is very much inspired by [alice]
 
 ## Usage
 
