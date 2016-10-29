@@ -1,6 +1,6 @@
 # Fusion
 
-[![Build Status](https://snap-ci.com/gofury/fasthttpchain/branch/master/build_image)](https://snap-ci.com/gofury/fasthttpchain/branch/master)
+[![Build Status](https://snap-ci.com/gofury/fusion/branch/master/build_image)](https://snap-ci.com/gofury/fusion/branch/master)
 [![Code Climate](https://codeclimate.com/github/gofury/fasthttpchain/badges/gpa.svg)](https://codeclimate.com/github/gofury/handlers)
 [![GoDoc](http://godoc.org/github.com/gofury/handlers?status.png)](http://godoc.org/github.com/gofury/handlers)
 
