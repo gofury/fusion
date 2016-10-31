@@ -6,9 +6,8 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-
 func paramHandler(param string) fasthttp.RequestHandler {
-	return func (ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
 		if ctx.UserValue("params") == nil {
 			ctx.SetUserValue("params", "")
 		}
@@ -30,11 +29,29 @@ func TestHandlersRunInOrder(t *testing.T) {
 	assert.Equal(t, ctx.UserValue("params"), "123")
 }
 
-func tagMiddleware (tag string) Middleware {
+func TestStopOnResponseStatus(t *testing.T) {
+	// given
+	h1 := paramHandler("1")
+	h2 := func(ctx *fasthttp.RequestCtx) {
+		ctx.SetUserValue("params", ctx.UserValue("params").(string) + "2")
+		ctx.SetStatusCode(fasthttp.StatusBadRequest)
+	}
+	h3 := paramHandler("3")
+	ctx := &fasthttp.RequestCtx{}
+
+	// when
+	Handlers(h1, h2, h3)(ctx)
+
+	// then
+	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
+	assert.Equal(t, "12", ctx.UserValue("params"))
+}
+
+func tagMiddleware(tag string) Middleware {
 	return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
-		return func (ctx *fasthttp.RequestCtx) {
-			h(ctx)
+		return func(ctx *fasthttp.RequestCtx) {
 			ctx.WriteString(tag)
+			h(ctx)
 		}
 	}
 }
@@ -56,21 +73,3 @@ func TestMiddlewaresRunInOrder(t *testing.T) {
 	// then
 	assert.Equal(t, "123\n", string(ctx.Response.Body()))
 }
-
-//func TestStopOnResponseStatus(t *testing.T) {
-//	// given
-//	middleware1 := func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", "1")}
-//	middleware2 := func(ctx *fasthttp.RequestCtx) {
-//			ctx.SetUserValue("params", ctx.UserValue("params").(string) + "2")
-//			ctx.SetStatusCode(fasthttp.StatusBadRequest)
-//		}
-//	middleware3 := func(ctx *fasthttp.RequestCtx) {ctx.SetUserValue("params", ctx.UserValue("params").(string) + "3")}
-//	ctx := &fasthttp.RequestCtx{}
-//
-//	// when
-//	Chain(middleware1, middleware2, middleware3)(ctx)
-//
-//	// then
-//	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
-//	assert.Equal(t, "12", ctx.UserValue("params"))
-//}

@@ -11,7 +11,7 @@ type Middleware func(fasthttp.RequestHandler) fasthttp.RequestHandler
 
 // Handlers acts as a simple function that
 func Handlers(hs ...fasthttp.RequestHandler) fasthttp.RequestHandler {
-	return func (ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
 		for _, h := range hs {
 			if (ctx.Response.StatusCode() < 400) {
 				h(ctx)
@@ -49,10 +49,10 @@ func (m *Middlewares) Handler(handler fasthttp.RequestHandler) fasthttp.RequestH
 	if handler == nil {
 		handler = fasthttprouter.New().Handler
 	}
-	return func (ctx *fasthttp.RequestCtx) {
-		for i := range m.middlewares {
-			handler = m.middlewares[len(m.middlewares)-1-i](handler)
-		}
+
+	for i := range m.middlewares {
+		handler = m.middlewares[len(m.middlewares) - 1 - i](handler)
 	}
+	return handler
 }
 
