@@ -9,7 +9,10 @@ import (
 
 func paramHandler(param string) fasthttp.RequestHandler {
 	return func (ctx *fasthttp.RequestCtx) {
-		ctx.SetUserValue(ctx.UserValue("params").(string) + "params", param)
+		if ctx.UserValue("params") == nil {
+			ctx.SetUserValue("params", "")
+		}
+		ctx.SetUserValue("params", ctx.UserValue("params").(string) + param)
 	}
 }
 
@@ -40,7 +43,7 @@ var testHandler = func(ctx *fasthttp.RequestCtx) {
 	ctx.Write([]byte("\n"))
 }
 
-func TestMiddlewares_HandlerRunInOrder(t *testing.T) {
+func TestMiddlewaresRunInOrder(t *testing.T) {
 	// given
 	m1 := tagMiddleware("1")
 	m2 := tagMiddleware("2")

@@ -3,7 +3,7 @@ package fusion
 
 import (
 	"github.com/valyala/fasthttp"
-	"github.com/gofury/furyroad"
+	"github.com/buaazp/fasthttprouter"
 )
 
 // type definition for Middleware that takes in a RequestHandler
@@ -44,10 +44,10 @@ func New(ms ...Middleware) *Middlewares {
 //     authPipe = stdStack.Handler(authHandler)
 // For proper middleware, this should cause no problems.
 //
-// Handler() treats nil as furyrouter.New().Handler
+// Handler() treats nil as fasthttprouter.New().Handler
 func (m *Middlewares) Handler(handler fasthttp.RequestHandler) fasthttp.RequestHandler {
 	if handler == nil {
-		handler = furyroad.New().Handler
+		handler = fasthttprouter.New().Handler
 	}
 	return func (ctx *fasthttp.RequestCtx) {
 		for i := range m.middlewares {
